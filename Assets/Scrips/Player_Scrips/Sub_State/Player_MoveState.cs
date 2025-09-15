@@ -23,7 +23,6 @@ public class Player_MoveState : PlayerState
         {
             stateMachine.ChangeState(player.idleState);
             player.rb.velocity = new Vector2(0f, player.rb.velocity.y);
-            Debug.Log("Idle");
         }
         if (player.xInput > 0 && !player.isFacingRight || player.xInput < 0 && player.isFacingRight)
         {
@@ -33,11 +32,6 @@ public class Player_MoveState : PlayerState
         if (Input.GetButtonDown("Jump") && player.isGrounded)
         {
             stateMachine.ChangeState(player.jumpState);
-        }
-
-        if (player.isTouchingWall && !player.isGrounded)
-        {
-            stateMachine.ChangeState(player.grabState);
         }
         if (!player.isGrounded && player.rb.velocity.y < 0)
         {
