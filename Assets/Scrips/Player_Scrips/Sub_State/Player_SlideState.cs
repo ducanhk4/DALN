@@ -28,10 +28,9 @@ public class Player_SlideState : PlayerState
         else
             player.rb.velocity = new Vector2(-player.slideSpeed, player.rb.velocity.y);
 
-        // Kiểm tra xem thời gian trượt đã hết chưa
         if (Time.time >= stateTime + player.slideDuration)
         {
-            if (player.isCrouching) // isCrouching của bạn là một raycast hướng lên trên để kiểm tra vật cản
+            if (player.isCrouching)
             {
                 stateMachine.ChangeState(player.crouchState);
             }
