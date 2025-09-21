@@ -1387,15 +1387,16 @@ MonoBehaviour:
   MoveData: {fileID: 11400000, guid: 004360d405050e6419eef3a9f9ca3bca, type: 2}
   wallCheck: {fileID: 814869577}
   ledgeCheck: {fileID: 1122782043}
+  playerCheck: {fileID: 595571216}
   wallCheckDistance: 0.2
   whatIsGround:
     serializedVersion: 2
     m_Bits: 8
-  playerCheck: {fileID: 595571216}
   playerCheckRadius: 0.3
   whatIsPlayer:
     serializedVersion: 2
     m_Bits: 64
+  TimeToDetect: 1.2
 --- !u!61 &1568283643
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1456,7 +1457,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 2
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

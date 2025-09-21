@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public Player_SlideState slideState { get; private set; }
     public Player_CrouchState crouchState { get; private set; }
     public Player_CrouchMoveState crouchMoveState { get; private set; }
+    public Player_Attack1State attack1State { get; private set; }
+    public Player_Attack2State attack2State { get; private set; }
+    public Player_Attack3State attack3State { get; private set; }
     public float xInput { get; private set; }
     public bool isFacingRight = true;
     // Trong PlayerController.cs
@@ -63,6 +67,10 @@ public class PlayerController : MonoBehaviour
         slideState = new Player_SlideState(this, stateMachine, "slide");
         crouchState = new Player_CrouchState(this, stateMachine, "crouch");
         crouchMoveState = new Player_CrouchMoveState(this, stateMachine, "crouchMove");
+        attack1State = new Player_Attack1State(this, stateMachine);
+        attack2State = new Player_Attack2State(this, stateMachine);
+        attack3State = new Player_Attack3State(this, stateMachine);
+
     }
 
     void Start()
@@ -70,6 +78,7 @@ public class PlayerController : MonoBehaviour
         stateMachine.Initialize(idleState);
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        int count = Enum.GetValues(typeof(CombatState)).Length;
     }
 
     void Update()
@@ -80,8 +89,16 @@ public class PlayerController : MonoBehaviour
         {
             stateMachine.ChangeState(slideState);
         }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            if (stateMachine.CurrentState == idleState)
+                stateMachine.ChangeState(attack1State);
+            else if (stateMachine.CurrentState is Player_AttackState attackState)
+                attackState.QueueCombo();
+        }
 
         stateMachine.CurrentState.LogicUpdate();
+
     }
 
 
@@ -101,4 +118,34 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawLine(crouchingCheck.position, crouchingCheck.position + transform.up * 0.1f);
     }
+
+    public void AnimationFinishTrigger()
+    {
+        if (stateMachine.CurrentState is Player_AttackState attackState)
+        {
+            attackState.AnimationFinishTrigger();
+        }
+    }
+    // Animation Event: bắt đầu dash nhẹ
+    public void StartAttackMovement()
+    {
+        float dashSpeed = 1f; // tốc độ trượt
+        rb.velocity = new Vector2(facingDirection * dashSpeed, 0f);
+    }
+
+    // Animation Event: dừng lại
+    public void StopAttackMovement()
+    {
+        rb.velocity = Vector2.zero;
+    }
+
 }
+
+public enum CombatState
+{
+
+}
+
+
+
+
